@@ -54,7 +54,7 @@ namespace ShopX
             app.UseCors("AngularCors");
             app.UseHttpsRedirection();
 
-            //app.UseAuthentication();
+            //app.UseAuthentication(); 
             app.UseAuthorization();
 
             app.MapControllers();
