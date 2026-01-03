@@ -1,4 +1,4 @@
-﻿using Core.Entities.OrderAggregate;
+﻿//using Core.Entities.OrderAggregate;
 using System.ComponentModel.DataAnnotations;
 
 namespace API.Dtos
@@ -11,11 +11,11 @@ namespace API.Dtos
         [Required]
         public int DeliveryMethodId { get; set; }
 
-        [Required]
-        public ShippingAddress ShippingAddress { get; set; } = null!;
+        //[Required]
+        //public ShippingAddress ShippingAddress { get; set; } = null!;
 
-        [Required]
-        public PaymentSummary PaymentSummary { get; set; } = null!;
+        //[Required]
+        //public PaymentSummary PaymentSummary { get; set; } = null!;
         public decimal Discount { get; set; }
     }
 }

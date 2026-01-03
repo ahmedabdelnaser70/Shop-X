@@ -1,10 +1,8 @@
-﻿using API.Dtos;
+﻿using API.RequestHelpers;
 using Core.Entities;
 using Core.Interfaces;
-using Infrastructure.Data;
-using Microsoft.AspNetCore.Http;
+using Core.Specifications;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -12,24 +10,28 @@ namespace API.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
+        private readonly IGenericRepository<Product> _productRepo;
 
-        private readonly IProductRepository _productRepo;
-        public ProductsController(IProductRepository productRepo)
+        public ProductsController(IGenericRepository<Product> productRepo)
         {
             _productRepo = productRepo;
         }
 
-
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts(string brand, string type, string sort)
+        public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts([FromQuery] ProductSpecParams specParams)
         {
-            return Ok(await _productRepo.GetProductsAsync(brand, type, sort));
+            var spec = new ProductSpecification(specParams);
+            var products = await _productRepo.ListAsync(spec);
+            var count = await _productRepo.CountAsync(spec);
+
+            var pagination = new Pagination<Product>(specParams.PageIndex, specParams.PageSize, count, products);
+            return Ok(pagination);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProductById(int id)
         {
-            var product = await _productRepo.GetProductByIdAsync(id);
+            var product = await _productRepo.GetByIdAsync(id);
 
             if (product == null)
                 return NotFound();
@@ -43,9 +45,9 @@ namespace API.Controllers
             if (productsDto == null)
                 return BadRequest();
 
-            _productRepo.AddProduct(productsDto);
+            _productRepo.Add(productsDto);
 
-            if (await _productRepo.SaveChangesAsync())
+            if (await _productRepo.SaveAllAsync())
                 return Created("added", productsDto);
 
             return BadRequest("Erorr adding product");
@@ -60,9 +62,9 @@ namespace API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            _productRepo.UpdateProduct(productDto);
+            _productRepo.Update(productDto);
 
-            if (await _productRepo.SaveChangesAsync())
+            if (await _productRepo.SaveAllAsync())
                 return Created("Updated", productDto);
 
             return BadRequest("Problem in update product");
@@ -71,12 +73,12 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Product>> DeleteProductById(int id)
         {
-            var product = await _productRepo.GetProductByIdAsync(id);
+            var product = await _productRepo.GetByIdAsync(id);
             if (product == null)
                 return BadRequest();
 
-            _productRepo.DeleteProduct(product);
-            if (await _productRepo.SaveChangesAsync())
+            _productRepo.Remove(product);
+            if (await _productRepo.SaveAllAsync())
                 return Created("Product is deleted", product);
 
             return BadRequest("Problem in delete product");
@@ -85,18 +87,20 @@ namespace API.Controllers
         [HttpGet("brands")]
         public async Task<ActionResult<IReadOnlyList<string>>> GetBrands()
         {
-            return Ok(await _productRepo.GetBrandsAsync());
+            var spec =  new BrandListSpecification();
+            return Ok(await _productRepo.ListAsync(spec));
         }
 
         [HttpGet("types")]
         public async Task<ActionResult<IReadOnlyList<string>>> GetTypes()
         {
-            return Ok(await _productRepo.GetTypesAsync());
+            var spec = new TypeListSpecification();
+            return Ok(await _productRepo.ListAsync(spec));
         }
 
         private bool ProductExists(int id)
         {
-            return _productRepo.ProductExists(id);
+            return _productRepo.Exists(id);
         }
     }
 }

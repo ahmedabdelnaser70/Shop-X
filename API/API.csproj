@@ -21,11 +21,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Errors\" />
 	  <Folder Include="Extensions\" />
-	  <Folder Include="Middleware\" />
 	  <Folder Include="SignalR\" />
-	  <Folder Include="RequestHelpers\" />
 	  <Folder Include="wwwroot\images\" />
 	</ItemGroup>
 

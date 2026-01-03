@@ -11,10 +11,15 @@ namespace Core.Interfaces
     {
         Task<IReadOnlyList<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);
-        void AddItem(T item);
-        void UpdateItem(T entity);
-        void RemoveItem(T entity);
+        void Add(T item);
+        void Update(T entity);
+        void Remove(T entity);
         Task<bool> SaveAllAsync();
-        bool ItemExists(int id);
+        bool Exists(int id);
+        Task<T?> GetEntityWithSpec(ISpecification<T> spec);
+        Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec);
+        Task<TResult?> GetEntityWithSpec<TResult>(ISpecification<T, TResult> spec);
+        Task<IReadOnlyList<TResult>> ListAsync<TResult>(ISpecification<T, TResult> spec);
+        Task<int> CountAsync(ISpecification<T> spec);
     }
 }

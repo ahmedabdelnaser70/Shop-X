@@ -1,4 +1,5 @@
 
+using API.Middleware;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
@@ -27,8 +28,21 @@ namespace ShopX
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
+            // Add CORS policy
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AngularCors", policy =>
+                {
+                    policy.AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials()
+                          .WithOrigins("http://localhost:4200", "https://localhost:4200");
+                });
+            });
 
             var app = builder.Build();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -37,10 +51,11 @@ namespace ShopX
                 app.UseSwaggerUI();
             }
 
+            app.UseCors("AngularCors");
             app.UseHttpsRedirection();
 
+            //app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 
