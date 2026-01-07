@@ -8,6 +8,7 @@ import { CartService } from '../../core/services/cart.service';
 // import { AccountService } from '../../core/services/account.service';
 import { MatDivider } from '@angular/material/divider';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { BusyService } from '../../core/services/busy.service';
 // import { IsAdmin } from '../../shared/directives/is-admin';
 @Component({
   selector: 'app-header',
@@ -28,7 +29,7 @@ import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  // busyService = inject(BusyService);
+  busyService = inject(BusyService);
   cartService = inject(CartService);
   // accountService = inject(AccountService);
   private router = inject(Router);

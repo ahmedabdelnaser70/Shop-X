@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ShopService } from '../../core/services/shop.service';
 import { Product } from '../../shared/models/product';
-import { ProductItemComponent } from "./product-item/product-item.component";
+import { ProductItemComponent } from './product-item/product-item.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FiltersDialogComponent } from './filters-dialog/filters-dialog.component';
 import { MatButton } from '@angular/material/button';
@@ -12,7 +12,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ShopParams } from '../../shared/models/shopParams';
 import { Pagination } from '../../shared/models/pagination';
 import { FormsModule } from '@angular/forms';
-import { EmptyStateComponent } from "../../shared/components/empty-state/empty-state.component";
+import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
 
 @Component({
   selector: 'app-shop',
@@ -29,13 +29,12 @@ import { EmptyStateComponent } from "../../shared/components/empty-state/empty-s
     EmptyStateComponent,
   ],
   templateUrl: './shop.component.html',
-  styleUrl: './shop.component.scss'
+  styleUrl: './shop.component.scss',
 })
 export class ShopComponent implements OnInit {
   private shopService = inject(ShopService);
-  private dialogService = inject(MatDialog)
-  //or
-  // constructor(private shopService: ShopService, private dialogService: MatDialog) { }
+  private dialogService = inject(MatDialog);
+
   products?: Pagination<Product>;
   sortOptions = [
     { name: 'Alphabetical', value: 'name' },
@@ -64,16 +63,16 @@ export class ShopComponent implements OnInit {
   onSearchChange() {
     this.shopParams.pageNumber = 1;
     this.shopService.getProducts(this.shopParams).subscribe({
-      next: response => this.products = response,
-      error: error => console.error(error)
-    })
+      next: (response) => (this.products = response),
+      error: (error) => console.error(error),
+    });
   }
 
   getProducts() {
     this.shopService.getProducts(this.shopParams).subscribe({
-      next: response => this.products = response,
-      error: error => console.error(error)
-    })
+      next: (response) => (this.products = response),
+      error: (error) => console.error(error),
+    });
   }
 
   onSortChange(event: any) {
@@ -90,11 +89,11 @@ export class ShopComponent implements OnInit {
       minWidth: '500px',
       data: {
         selectedBrands: this.shopParams.brands,
-        selectedTypes: this.shopParams.types
-      }
+        selectedTypes: this.shopParams.types,
+      },
     });
     dialogRef.afterClosed().subscribe({
-      next: result => {
+      next: (result) => {
         if (result) {
           this.shopParams.pageNumber = 1;
           this.shopParams.types = result.selectedTypes;
