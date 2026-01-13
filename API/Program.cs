@@ -3,7 +3,9 @@ using API.Middleware;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 
 namespace ShopX
 {
@@ -25,8 +27,17 @@ namespace ShopX
                 opt.UseSqlServer(builder.Configuration.GetConnectionString("StoreXDB"));
             });
 
-            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+            builder.Services.AddSingleton<IConnectionMultiplexer>(config =>
+            {
+                var connStirng = builder.Configuration.GetConnectionString("Redis")
+                    ?? throw new InvalidOperationException("Cannot get Redis connection string.");
+                var configuration = ConfigurationOptions.Parse(connStirng, true);
+                return ConnectionMultiplexer.Connect(configuration);
+            });
+            builder.Services.AddSingleton<ICartService, CartService>();
 
             // Add CORS policy
             builder.Services.AddCors(options =>
