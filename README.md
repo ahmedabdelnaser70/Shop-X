@@ -107,4 +107,3 @@ This project was developed to:
 - Demonstrate full-stack development skills
 - Apply enterprise-level architectural patterns
 - Showcase real-world E-Commerce workflows
-- Serve as a professional portfolio and technical evaluation project
