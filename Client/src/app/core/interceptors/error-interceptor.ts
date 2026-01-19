@@ -4,7 +4,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { SnackbarService } from '../services/snackbar.service';
 
-export const erorrInterceptor: HttpInterceptorFn = (req, next) => {
+export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const Snackbar = inject(SnackbarService);
   return next(req).pipe(

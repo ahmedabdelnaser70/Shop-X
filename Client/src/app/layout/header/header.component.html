@@ -19,11 +19,11 @@
       >
         <mat-icon>shopping_cart</mat-icon>
       </a>
-      <!-- @if (accountService.currentUser()) { -->
+      <!-- @if (accountService.currentUser()) {
       <div class="px-6">
         <button mat-button [matMenuTriggerFor]="menu">
           <mat-icon>arrow_drop_down</mat-icon>
-          <!-- <span>{{ accountService.currentUser()?.email }}</span> -->
+          <span>{{ accountService.currentUser()?.email }}</span>
         </button>
         <mat-menu #menu="matMenu" class="px-3">
           <button mat-menu-item routerLink="/cart">
@@ -41,7 +41,7 @@
           </button>
         </mat-menu>
       </div>
-      <!-- }
+      }
       @else { -->
       <button mat-stroked-button routerLink="/account/login">Login</button>
       <button mat-stroked-button routerLink="/account/register">Register</button>
@@ -51,5 +51,5 @@
 </header>
 
 @if (busyService.loading) {
-<mat-progress-bar class="fixed top-20 z-50" mode="indeterminate"></mat-progress-bar>
+  <mat-progress-bar class="fixed top-20 z-50" mode="indeterminate"></mat-progress-bar>
 }

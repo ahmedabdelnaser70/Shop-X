@@ -12,6 +12,7 @@ import { DeliveryMethod } from '../../shared/models/deliveryMethod';
 export class CartService {
   baseUrl = environment.baseUrl;
   private http = inject(HttpClient);
+
   cart = signal<Cart | null>(null);
   itemCount = computed(() => {
     return this.cart()?.items.reduce((sum, item) => sum + item.quantity, 0);
@@ -56,7 +57,7 @@ export class CartService {
       map((cart) => {
         this.cart.set(cart);
         return cart;
-      })
+      }),
     );
   }
 
@@ -64,7 +65,7 @@ export class CartService {
     return this.http.post<Cart>(this.baseUrl + 'cart', cart).pipe(
       tap((cart) => {
         this.cart.set(cart);
-      })
+      }),
     );
   }
 

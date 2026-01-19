@@ -17,12 +17,12 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ShoppingCart>> GetCart(string cartId)
+        public async Task<ActionResult<ShoppingCart>> GetCartById(string id)
         {
             try
             {
-                var cart = await _cartService.GetCartAsync(cartId);
-                return Ok(cart ?? new ShoppingCart { Id = cartId });
+                var cart = await _cartService.GetCartAsync(id);
+                return Ok(cart ?? new ShoppingCart { Id = id });
             }
             catch (Exception ex)
             {
