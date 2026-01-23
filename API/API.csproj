@@ -21,7 +21,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Extensions\" />
 	  <Folder Include="SignalR\" />
 	  <Folder Include="wwwroot\images\" />
 	</ItemGroup>

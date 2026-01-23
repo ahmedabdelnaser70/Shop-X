@@ -40,6 +40,7 @@ namespace API.Controllers
             return Ok();
         }
 
+        // Test endpoints for authorization
         [Authorize]
         [HttpGet("secret")]
         public IActionResult GetSecret()

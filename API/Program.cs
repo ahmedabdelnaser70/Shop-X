@@ -36,6 +36,7 @@ namespace ShopX
                 return ConnectionMultiplexer.Connect(configuration);
             });
             builder.Services.AddSingleton<ICartService, CartService>();
+
             // Add CORS policy
             builder.Services.AddCors(options =>
             {
