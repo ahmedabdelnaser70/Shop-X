@@ -19,52 +19,28 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<ShoppingCart>> GetCartById(string id)
         {
-            try
-            {
-                var cart = await _cartService.GetCartAsync(id);
-                return Ok(cart ?? new ShoppingCart { Id = id });
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw new Exception(ex.Message);
-            }
+            var cart = await _cartService.GetCartAsync(id);
+            return Ok(cart ?? new ShoppingCart { Id = id });
         }
 
         [HttpPost]
         public async Task<ActionResult<ShoppingCart>> UpdateCart(ShoppingCart cart)
         {
-            try
-            {
-                var updatedCart = await _cartService.SetCartAsync(cart);
-                if (updatedCart == null)
-                    return BadRequest("Problem saving cart.");
+            var updatedCart = await _cartService.SetCartAsync(cart);
+            if (updatedCart == null)
+                return BadRequest("Problem saving cart.");
 
-                return Ok(updatedCart);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw new Exception(ex.Message);
-            }
+            return Ok(updatedCart);
         }
 
         [HttpDelete]
-        public async Task<ActionResult> DeleteCart(string cartId)
+        public async Task<IActionResult> DeleteCart(string id)
         {
-            try
-            {
-                var deleted = await _cartService.DeleteCartAsync(cartId);
-                if (!deleted) 
-                    return BadRequest("Problem deleting cart.");
+            var deleted = await _cartService.DeleteCartAsync(id);
+            if (!deleted)
+                return BadRequest("Problem deleting cart.");
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw new Exception(ex.Message);
-            }
+            return Ok();
         }
     }
 }

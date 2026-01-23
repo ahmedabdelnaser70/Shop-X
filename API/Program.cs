@@ -1,5 +1,6 @@
 
 using API.Middleware;
+using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
@@ -18,10 +19,8 @@ namespace ShopX
             // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
             builder.Services.AddDbContext<StoreContext>(opt =>
             {
                 opt.UseSqlServer(builder.Configuration.GetConnectionString("StoreXDB"));
@@ -29,7 +28,6 @@ namespace ShopX
 
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
             builder.Services.AddSingleton<IConnectionMultiplexer>(config =>
             {
                 var connStirng = builder.Configuration.GetConnectionString("Redis")
@@ -38,7 +36,6 @@ namespace ShopX
                 return ConnectionMultiplexer.Connect(configuration);
             });
             builder.Services.AddSingleton<ICartService, CartService>();
-
             // Add CORS policy
             builder.Services.AddCors(options =>
             {
@@ -51,10 +48,15 @@ namespace ShopX
                 });
             });
 
+            builder.Services.AddAuthorization();
+            builder.Services.AddIdentityApiEndpoints<AppUser>()
+                .AddEntityFrameworkStores<StoreContext>();
+
+
+
+
             var app = builder.Build();
-
             app.UseMiddleware<ExceptionMiddleware>();
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -64,11 +66,11 @@ namespace ShopX
 
             app.UseCors("AngularCors");
             app.UseHttpsRedirection();
-
             //app.UseAuthentication(); 
             app.UseAuthorization();
-
             app.MapControllers();
+            // Adds an /api prefix to all Identity endpoints (e.g. /api/login, /api/register)
+            app.MapGroup("api").MapIdentityApi<AppUser>();
 
             #region migration for seedData
 
@@ -86,7 +88,6 @@ namespace ShopX
                 throw;
             }
             #endregion
-
 
             app.Run();
         }
