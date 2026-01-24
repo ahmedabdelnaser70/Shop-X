@@ -9,6 +9,7 @@ import { CartService } from '../../core/services/cart.service';
 import { MatDivider } from '@angular/material/divider';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { BusyService } from '../../core/services/busy.service';
+import { AccountService } from '../../core/services/account.service';
 // import { IsAdmin } from '../../shared/directives/is-admin';
 @Component({
   selector: 'app-header',
@@ -31,15 +32,15 @@ import { BusyService } from '../../core/services/busy.service';
 export class HeaderComponent {
   busyService = inject(BusyService);
   cartService = inject(CartService);
-  // accountService = inject(AccountService);
+  accountService = inject(AccountService);
   private router = inject(Router);
 
   logout() {
-    // this.accountService.logout().subscribe({
-    //   next: () => {
-    //     this.accountService.currentUser.set(null);
-    //     this.router.navigateByUrl('/');
-    //   },
-    // });
+    this.accountService.logout().subscribe({
+      next: () => {
+        this.accountService.currentUser.set(null);
+        this.router.navigateByUrl('/');
+      },
+    });
   }
 }

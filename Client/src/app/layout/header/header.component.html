@@ -19,33 +19,32 @@
       >
         <mat-icon>shopping_cart</mat-icon>
       </a>
-      <!-- @if (accountService.currentUser()) {
-      <div class="px-6">
-        <button mat-button [matMenuTriggerFor]="menu">
-          <mat-icon>arrow_drop_down</mat-icon>
-          <span>{{ accountService.currentUser()?.email }}</span>
-        </button>
-        <mat-menu #menu="matMenu" class="px-3">
-          <button mat-menu-item routerLink="/cart">
-            <mat-icon>shopping_cart</mat-icon>
-            My cart
+      @if (accountService.currentUser()) {
+        <div class="px-6">
+          <button mat-button [matMenuTriggerFor]="menu">
+            <mat-icon>arrow_drop_down</mat-icon>
+            <span>{{ accountService.currentUser()?.email }}</span>
           </button>
-          <button mat-menu-item routerLink="/orders">
-            <mat-icon>history</mat-icon>
-            View Orders
-          </button>
-          <mat-divider></mat-divider>
-          <button mat-menu-item (click)="logout()">
-            <mat-icon>logout</mat-icon>
-            Logout
-          </button>
-        </mat-menu>
-      </div>
+          <mat-menu #menu="matMenu" class="px-3">
+            <button mat-menu-item routerLink="/cart">
+              <mat-icon>shopping_cart</mat-icon>
+              My cart
+            </button>
+            <button mat-menu-item routerLink="/orders">
+              <mat-icon>history</mat-icon>
+              View Orders
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="logout()">
+              <mat-icon>logout</mat-icon>
+              Logout
+            </button>
+          </mat-menu>
+        </div>
+      } @else {
+        <button mat-stroked-button routerLink="/account/login">Login</button>
+        <button mat-stroked-button routerLink="/account/register">Register</button>
       }
-      @else { -->
-      <button mat-stroked-button routerLink="/account/login">Login</button>
-      <button mat-stroked-button routerLink="/account/register">Register</button>
-      <!-- } -->
     </div>
   </div>
 </header>
