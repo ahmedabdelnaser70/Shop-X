@@ -18,6 +18,12 @@ export class LoginComponent {
   private accountService = inject(AccountService);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
+  returnUrl = '/shop';
+
+  constructor() {
+    const url = this.activatedRoute.snapshot.queryParams['returnUrl'];
+    if (url) this.returnUrl = url;
+  }
 
   loginForm = this.fb.group({
     email: [''],
@@ -28,7 +34,7 @@ export class LoginComponent {
     this.accountService.login(this.loginForm.value).subscribe({
       next: () => {
         this.accountService.getUserInfo().subscribe();
-        this.router.navigateByUrl('/shop');
+        this.router.navigateByUrl(this.returnUrl);
       },
     });
   }
