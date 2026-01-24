@@ -53,6 +53,8 @@ namespace ShopX
             builder.Services.AddIdentityApiEndpoints<AppUser>()
                 .AddEntityFrameworkStores<StoreContext>();
 
+            builder.Services.AddScoped<IPaymentService, PaymentService>();
+
 
 
 
