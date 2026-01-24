@@ -89,8 +89,8 @@ This architecture is designed for maintainability, scalability, and real-world p
 
 ## 🧰 Tech Stack
 
-- ASP.NET Core (.NET 10)
-- Angular 21
+- ASP.NET Core (.NET 8)
+- Angular 20
 - C#
 - TypeScript
 - Redis
