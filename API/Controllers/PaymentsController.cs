@@ -29,7 +29,7 @@ namespace API.Controllers
             return Ok(cart);
         }
 
-        [HttpGet("delivery-method")]
+        [HttpGet("delivery-methods")]
         public async Task<ActionResult<IReadOnlyList<DeliveryMethod>>> GetDeliveryMethods()
         {
             return Ok(await _dmRepo.GetAllAsync());

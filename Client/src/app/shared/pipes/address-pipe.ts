@@ -12,11 +12,13 @@ export class AddressPipe implements PipeTransform {
       )?.address!;
       return `${value.name}, ${line1}${line2 ? ', ' + line2 : ''}, 
         ${city}, ${state}, ${postal_code}, ${country}`;
-    } else if (value && 'line1' in value) {
-      // const {line1, line2, city, state, country, postalCode} = value as ShippingAddress;
-      // return `${value.name}, ${line1}${line2 ? ', ' + line2 : ''},
-      //   ${city}, ${state}, ${postalCode}, ${country}`;
-    } else {
+    }
+    // else if (value && 'line1' in value) {
+    //   const {line1, line2, city, state, country, postalCode} = value as ShippingAddress;
+    //   return `${value.name}, ${line1}${line2 ? ', ' + line2 : ''},
+    //     ${city}, ${state}, ${postalCode}, ${country}`;
+    // }
+    else {
       return 'Unknown address';
     }
   }
