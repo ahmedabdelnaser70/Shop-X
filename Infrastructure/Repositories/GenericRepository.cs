@@ -43,11 +43,6 @@ namespace Infrastructure.Repositories
             _context.Set<T>().Remove(entity);
         }
 
-        public async Task<bool> SaveAllAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
-
         public void Update(T item)
         {
             _context.Set<T>().Attach(item);

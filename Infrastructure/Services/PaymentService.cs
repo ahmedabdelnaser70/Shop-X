@@ -14,15 +14,13 @@ namespace Infrastructure.Services
     {
         private readonly IConfiguration config;
         private readonly ICartService cartService;
-        private readonly IGenericRepository<Core.Entities.Product> productRepo;
-        private readonly IGenericRepository<DeliveryMethod> dmRepo;
+        private readonly IUnitOfWork _unitOfWork;
         public PaymentService(IConfiguration config, ICartService cartService,
-            IGenericRepository<Core.Entities.Product> productRepo, IGenericRepository<DeliveryMethod> dmRepo)
+            IUnitOfWork unitOfWork)
         {
             this.config = config;
             this.cartService = cartService;
-            this.productRepo = productRepo;
-            this.dmRepo = dmRepo;
+            _unitOfWork = unitOfWork;
         }
         
         public async Task<ShoppingCart> CreateOrUpdatePaymentIntent(string cartId)
@@ -34,7 +32,7 @@ namespace Infrastructure.Services
             var shippingPrice = 0m;
             if (cart.DeliveryMethodId.HasValue)
             {
-                var deliveryMethod = await dmRepo.GetByIdAsync((int)cart.DeliveryMethodId);
+                var deliveryMethod = await _unitOfWork.Repository<DeliveryMethod>().GetByIdAsync((int)cart.DeliveryMethodId);
                 if (deliveryMethod == null) return null;
 
                 shippingPrice = deliveryMethod.Price;
@@ -42,7 +40,7 @@ namespace Infrastructure.Services
 
             foreach (var item in cart.Items)
             {
-                var productItem = await productRepo.GetByIdAsync(item.ProductId);
+                var productItem = await _unitOfWork.Repository<Core.Entities.Product>().GetByIdAsync(item.ProductId);
                 if (productItem == null) return null;
 
                 if (item.Price != productItem.Price)

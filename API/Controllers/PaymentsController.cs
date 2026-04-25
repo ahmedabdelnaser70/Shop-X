@@ -11,11 +11,11 @@ namespace API.Controllers
     public class PaymentsController : ControllerBase
     {
         private readonly IPaymentService _paymentService;
-        private readonly IGenericRepository<DeliveryMethod> _dmRepo;
-        public PaymentsController(IPaymentService paymentService, IGenericRepository<DeliveryMethod> dmRepo)
+        private readonly IUnitOfWork _unitOfWork;
+        public PaymentsController(IPaymentService paymentService, IUnitOfWork unitOfWork)
         {
             _paymentService = paymentService;
-            _dmRepo = dmRepo;
+            _unitOfWork = unitOfWork;
         }
 
         [Authorize]
@@ -32,7 +32,7 @@ namespace API.Controllers
         [HttpGet("delivery-methods")]
         public async Task<ActionResult<IReadOnlyList<DeliveryMethod>>> GetDeliveryMethods()
         {
-            return Ok(await _dmRepo.GetAllAsync());
+            return Ok(await _unitOfWork.Repository<DeliveryMethod>().GetAllAsync());
         }
     }
 }
