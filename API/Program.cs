@@ -1,5 +1,6 @@
 
 using API.Middleware;
+using API.SignalR;
 using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
@@ -55,7 +56,7 @@ namespace ShopX
                 .AddEntityFrameworkStores<StoreContext>();
 
             builder.Services.AddScoped<IPaymentService, PaymentService>();
-
+            builder.Services.AddSignalR();
 
 
 
@@ -70,11 +71,12 @@ namespace ShopX
 
             app.UseCors("AngularCors");
             app.UseHttpsRedirection();
-            //app.UseAuthentication(); 
+            app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
             // Adds an /api prefix to all Identity endpoints (e.g. /api/login, /api/register)
             app.MapGroup("api").MapIdentityApi<AppUser>();
+            app.MapHub<NotificationHub>("/hub/notifications");
 
             #region migration for seedData
 
