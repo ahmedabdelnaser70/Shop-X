@@ -22,7 +22,7 @@ namespace API.SignalR
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
             var email = Context.User.GetEmail();
-            if (string.IsNullOrEmpty(email))
+            if (!string.IsNullOrEmpty(email))
                 UserConnections.TryRemove(email, out _);
             
             await base.OnDisconnectedAsync(exception);
