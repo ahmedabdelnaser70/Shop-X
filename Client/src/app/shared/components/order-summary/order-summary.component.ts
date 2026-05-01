@@ -7,6 +7,7 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import { CartService } from '../../../core/services/cart.service';
 import { firstValueFrom } from 'rxjs';
+import { StripeService } from '../../../core/services/stripe.service';
 
 @Component({
   selector: 'app-order-summary',
@@ -25,7 +26,7 @@ import { firstValueFrom } from 'rxjs';
 })
 export class OrderSummaryComponent {
   cartService = inject(CartService);
-  // private stripeService = inject(StripeService);
+  private stripeService = inject(StripeService);
   location = inject(Location);
   code?: string;
 
@@ -40,7 +41,7 @@ export class OrderSummaryComponent {
           this.code = undefined;
         }
         if (this.location.path() === '/checkout') {
-          // await firstValueFrom(this.stripeService.createOrUpdatePaymentIntent());
+          await firstValueFrom(this.stripeService.createOrUpdatePaymentIntent());
         }
       },
     });
@@ -52,7 +53,7 @@ export class OrderSummaryComponent {
     if (cart.coupon) cart.coupon = undefined;
     await firstValueFrom(this.cartService.setCart(cart));
     if (this.location.path() === '/checkout') {
-      // await firstValueFrom(this.stripeService.createOrUpdatePaymentIntent());
+      await firstValueFrom(this.stripeService.createOrUpdatePaymentIntent());
     }
   }
 }

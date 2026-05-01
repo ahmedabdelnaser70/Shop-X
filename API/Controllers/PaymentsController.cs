@@ -19,11 +19,11 @@ namespace API.Controllers
         private readonly IPaymentService _paymentService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration _config;
-        private readonly ILogger _logger;
+        private readonly ILogger<PaymentsController> _logger;
         private readonly string _whSecret;
         private readonly IHubContext<NotificationHub> _hubContext;
 
-        public PaymentsController(IPaymentService paymentService, IUnitOfWork unitOfWork, ILogger logger, IConfiguration config, IHubContext<NotificationHub> hubContext)
+        public PaymentsController(IPaymentService paymentService, IUnitOfWork unitOfWork, ILogger<PaymentsController> logger, IConfiguration config, IHubContext<NotificationHub> hubContext)
         {
             _paymentService = paymentService;
             _unitOfWork = unitOfWork;
